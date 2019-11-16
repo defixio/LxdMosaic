@@ -41,7 +41,7 @@
     <div class="col-md-6">
         <div class="card text-white bg-deepblue">
           <div class="card-body">
-              <h5> <u> Container Details <i class="fas float-right fa-info-circle"></i> </u> </h5>
+              <h5> <a class="text-white container-config-details" href="#"> <u> Container Details <i class="fas float-right fa-info-circle"></i> </u> </a> </h5>
               Host: <span id="container-hostNameDisplay"></span>
               <br/>
               <a
@@ -746,6 +746,10 @@ function loadContainerView(data)
             $("#goToBackups").addClass("bg-dark disabled");
         }
 
+        //JSON.stringify(x, null, 2);
+        //result
+        $("#detailedConfig-pre").html(JSON.stringify(x, null, 2));
+
         //NOTE Read more here https://github.com/lxc/pylxd/issues/242
         let containerCpuTime = nanoSecondsToHourMinutes(x.state.cpu.usage);
 
@@ -1228,6 +1232,11 @@ $("#containerBox").on("click", ".viewSnapsnot", function(){
     snapshotDetails.snapshotName = $(this).attr("id");
     $("#modal-container-restoreSnapshot").modal("show");
 });
+
+$("#containerBox").on("click", ".container-config-details", function(){
+    $("#modal-container-detailedConfig").modal("show");
+});
+
 </script>
 <?php
     require __DIR__ . "/../modals/containers/migrateContainer.php";
@@ -1235,5 +1244,6 @@ $("#containerBox").on("click", ".viewSnapsnot", function(){
     require __DIR__ . "/../modals/containers/restoreSnapshot.php";
     require __DIR__ . "/../modals/containers/createContainer.php";
     require __DIR__ . "/../modals/containers/editSettings.php";
+    require __DIR__ . "/../modals/containers/detailedConfig.php";
     require __DIR__ . "/../modals/containers/files/uploadFile.php";
 ?>
