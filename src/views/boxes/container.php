@@ -746,10 +746,6 @@ function loadContainerView(data)
             $("#goToBackups").addClass("bg-dark disabled");
         }
 
-        //JSON.stringify(x, null, 2);
-        //result
-        $("#detailedConfig-pre").html(JSON.stringify(x, null, 2));
-
         //NOTE Read more here https://github.com/lxc/pylxd/issues/242
         let containerCpuTime = nanoSecondsToHourMinutes(x.state.cpu.usage);
 
@@ -1234,6 +1230,9 @@ $("#containerBox").on("click", ".viewSnapsnot", function(){
 });
 
 $("#containerBox").on("click", ".container-config-details", function(){
+    detailedContainerConfig.hostId = currentContainerDetails.hostId;
+    detailedContainerConfig.container = currentContainerDetails.container;
+    detailedContainerConfig.alias = currentContainerDetails.alias;
     $("#modal-container-detailedConfig").modal("show");
 });
 

@@ -25,57 +25,35 @@
 </div>
 <script>
 
+    var detailedContainerConfig = {
+        hostId: null,
+        container: null,
+        alias: null
+    }
+    
     $("#modal-container-detailedConfig").on("shown.bs.modal", function(){
-
-        if(!$.isPlainObject(currentContainerDetails)){
+ 
+        if(!$.isPlainObject(detailedContainerConfig)){
             $("#modal-container-detailedConfig").modal("toggle");
             alert("required variable isn't right");
             return false;
-        }else if(typeof currentContainerDetails.container !== "string"){
+        } else if(!$.isNumeric(detailedContainerConfig.hostId)) {
+            $("#modal-container-detailedConfig").modal("toggle");
+            alert("hostId isn't set");
+            return false;
+        } else if (typeof detailedContainerConfig.container !== "string") {  
             $("#modal-container-detailedConfig").modal("toggle");
             alert("container isn't set");
             return false;
-        }
+        } 
 
-        /*ajaxRequest(globalUrls.containers.getCurrentSettings, currentContainerDetails, function(data){
-            data = $.parseJSON(data);
-            if(data.existingSettings.length > 0){
-                let existingSettingsHtml = "";
-                $.each(data.existingSettings, function(i, item){
-                    existingSettingsHtml += `<div style='margin-bottom: 5px; border-bottom: 1px solid black; padding: 10px;' class='input-group'>
-                    <div class='col-md-4'>
-                        <div class='input-group-prepend'>
-                            <select name='key' class='form-control settingSelect' disabled='disabled' style='width: 100%'>
-                                <option value='${item.key}' selected>${item.key}</option>
-                             </select>
-                            </div>
-                    </div>
-                    <div class='col-md-4'>
-                        <div class='description'>${item.description}</div>
-                    </div>
-                    <div class='col-md-3'>
-                        <input  style="width: 100%" type="text" name="value" value="${item.value}" class="form-control"/>
-                    </div>
-                    </div>`;
-                });
-                $("#detailedConfig-list").empty().append(existingSettingsHtml);
-            }
+        ajaxRequest(globalUrls.containers.getDetails, detailedContainerConfig, (data)=> {
+            let details = $.parseJSON(data);
+            $("#detailedConfig-pre").html(JSON.stringify(details, null, 2));
+        });
 
-            if(!$.isEmptyObject(data.remainingSettings)){
-                reamingSettingSelectOptions += "<option value=''>Please Select</option>";
-                $.each(data.remainingSettings, function(i, item){
-                    reamingSettingSelectOptions += `<option
-                        data-default='${item.value}'
-                        data-description='${item.description}'
-                        value='${item.key}'>
-                            ${item.key}
-                        </option>`;
-                });
-            }
-        });*/
-
-        $(".detailedConfig-containerName").html(currentContainerDetails.container);
-        $("#detailedConfig-currentHost").html(currentContainerDetails.alias);
+        $(".detailedConfig-containerName").html(detailedContainerConfig.container);
+        $("#detailedConfig-currentHost").html(detailedContainerConfig.alias);
     });
 
 </script>
